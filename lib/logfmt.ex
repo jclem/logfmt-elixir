@@ -88,6 +88,16 @@ defmodule Logfmt do
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
+  def parse_char({char, rest}, :qvalue, false, key, value, map) when char == "\\" do
+    parse_char(next_grapheme(rest), :qvalue, true, key, value, map)
+  end
+
+  @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
+  def parse_char({char, rest}, :qvalue, true, key, value, map) when char == "\"" do
+    parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
+  end
+
+  @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
   def parse_char({char, rest}, :qvalue, false, key, value, map) when char == "\"" do
     parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, value))
   end

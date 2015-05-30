@@ -16,4 +16,8 @@ defmodule LogfmtTest do
   test "parses unfinished pairs" do
     assert Logfmt.parse("key=\"value\" key2=") == %{"key" => "value", "key2" => true}
   end
+
+  test "supports escaped quotes" do
+    assert Logfmt.parse(~S(key="\"value\"")) == %{"key" => ~S("value")}
+  end
 end
