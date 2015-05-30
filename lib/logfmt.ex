@@ -6,35 +6,35 @@ defmodule Logfmt do
 
   ## Examples
 
-      iex> Logfmt.parse "foo=bar"
+      iex> Logfmt.decode "foo=bar"
       %{"foo" => "bar"}
 
-      iex> Logfmt.parse ~s(foo="bar")
+      iex> Logfmt.decode ~s(foo="bar")
       %{"foo" => "bar"}
 
-      iex> Logfmt.parse "foo"
+      iex> Logfmt.decode "foo"
       %{"foo" => true}
 
-      iex> Logfmt.parse "foo="
+      iex> Logfmt.decode "foo="
       %{"foo" => true}
 
-      iex> Logfmt.parse ~S(foo="\"bar\"")
+      iex> Logfmt.decode ~S(foo="\"bar\"")
       %{"foo" => "\"bar\""}
 
-      iex> Logfmt.parse "foo=true"
+      iex> Logfmt.decode "foo=true"
       %{"foo" => true}
 
-      iex> Logfmt.parse "foo=false"
+      iex> Logfmt.decode "foo=false"
       %{"foo" => false}
 
-      iex> Logfmt.parse "foo=0"
+      iex> Logfmt.decode "foo=0"
       %{"foo" => 0}
 
-      iex> Logfmt.parse "foo=1.2"
+      iex> Logfmt.decode "foo=1.2"
       %{"foo" => 1.2}
   """
-  @spec parse(String.t) :: map
-  def parse(string) do
+  @spec decode(String.t) :: map
+  def decode(string) do
     parse_char(next_grapheme(string), :garbage, %{})
   end
 
