@@ -67,12 +67,12 @@ defmodule Logfmt do
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
   defp parse_char({_char, rest}, :key, key, map) do
-    parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, true))
+    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, true))
   end
 
   @spec parse_char(nil, atom, String.t, map) :: map
   defp parse_char(nil, :key, key, map) do
-    map |> Map.put(key, true)
+    map |> put_value(key, true)
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
@@ -93,13 +93,13 @@ defmodule Logfmt do
 
   @spec parse_char(nil, atom, String.t, map) :: map
   defp parse_char(nil, :equals, key, map) do
-    map |> Map.put(key, true)
+    map |> put_value(key, true)
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, String.t, map) :: map
   defp parse_char({char, rest}, :ivalue, key, value, map)
   when char <= " " or char == "\"" or char == "=" do
-    parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, value |> cast))
+    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, value))
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, String.t, map) :: map
@@ -109,7 +109,7 @@ defmodule Logfmt do
 
   @spec parse_char(nil, atom, String.t, String.t, map) :: map
   defp parse_char(nil, :ivalue, key, value, map) do
-    map |> Map.put(key, value |> cast)
+    map |> put_value(key, value)
   end
 
   @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
@@ -124,7 +124,7 @@ defmodule Logfmt do
 
   @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
   defp parse_char({"\"", rest}, :qvalue, false, key, value, map) do
-    parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, value))
+    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, value))
   end
 
   @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
@@ -134,6 +134,16 @@ defmodule Logfmt do
 
   @spec parse_char(nil, atom, boolean, String.t, String.t, map) :: map
   defp parse_char(nil, :qvalue, false, key, value, map) do
+    map |> put_value(key, value)
+  end
+
+  @spec put_value(map, String.t, boolean) :: map
+  defp put_value(map, key, value) when is_boolean(value) do
+    map |> Map.put(key, value)
+  end
+
+  @spec put_value(map, String.t, String.t) :: map
+  defp put_value(map, key, value) do
     map |> Map.put(key, value |> cast)
   end
 
