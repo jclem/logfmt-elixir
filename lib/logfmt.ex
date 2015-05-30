@@ -1,6 +1,26 @@
 defmodule Logfmt do
   import String, only: [next_grapheme: 1]
 
+  @doc ~S"""
+  Parses the given line into a map
+
+  ## Examples
+
+      iex> Logfmt.parse "foo=bar"
+      %{"foo" => "bar"}
+
+      iex> Logfmt.parse ~s(foo="bar")
+      %{"foo" => "bar"}
+
+      iex> Logfmt.parse "foo"
+      %{"foo" => true}
+
+      iex> Logfmt.parse "foo="
+      %{"foo" => true}
+
+      iex> Logfmt.parse ~S(foo="\"bar\"")
+      %{"foo" => "\"bar\""}
+  """
   @spec parse(String.t) :: map
   def parse(string) do
     parse_char(next_grapheme(string), :garbage, %{})
