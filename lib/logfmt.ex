@@ -29,15 +29,8 @@ defmodule Logfmt do
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
-  defp parse_char({char, rest}, :key, key, map)
-  when char == "=" do
+  defp parse_char({"=", rest}, :key, key, map) do
     parse_char(next_grapheme(rest), :equals, key, map)
-  end
-
-  @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
-  defp parse_char({char, rest}, :key, key, map)
-  when char == "=" do
-    parse_char(next_grapheme(rest), :equals, key, map |> Map.put(key, true))
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
@@ -57,7 +50,7 @@ defmodule Logfmt do
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
-  defp parse_char({char, rest}, :equals, key, map) when char == "\"" do
+  defp parse_char({"\"", rest}, :equals, key, map) do
     parse_char(next_grapheme(rest), :qvalue, false, key, "", map)
   end
 
@@ -88,17 +81,17 @@ defmodule Logfmt do
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
-  defp parse_char({char, rest}, :qvalue, false, key, value, map) when char == "\\" do
+  defp parse_char({"\\", rest}, :qvalue, false, key, value, map) do
     parse_char(next_grapheme(rest), :qvalue, true, key, value, map)
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
-  defp parse_char({char, rest}, :qvalue, true, key, value, map) when char == "\"" do
+  defp parse_char({char, rest}, :qvalue, true, key, value, map) do
     parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
-  defp parse_char({char, rest}, :qvalue, false, key, value, map) when char == "\"" do
+  defp parse_char({"\"", rest}, :qvalue, false, key, value, map) do
     parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, value))
   end
 
