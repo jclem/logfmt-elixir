@@ -20,6 +20,18 @@ defmodule Logfmt do
 
       iex> Logfmt.parse ~S(foo="\"bar\"")
       %{"foo" => "\"bar\""}
+
+      iex> Logfmt.parse "foo=true"
+      %{"foo" => true}
+
+      iex> Logfmt.parse "foo=false"
+      %{"foo" => false}
+
+      iex> Logfmt.parse "foo=0"
+      %{"foo" => 0}
+
+      iex> Logfmt.parse "foo=1.2"
+      %{"foo" => 1.2}
   """
   @spec parse(String.t) :: map
   def parse(string) do
@@ -87,7 +99,7 @@ defmodule Logfmt do
   @spec parse_char({String.t, String.t}, atom, String.t, String.t, map) :: map
   defp parse_char({char, rest}, :ivalue, key, value, map)
   when char <= " " or char == "\"" or char == "=" do
-    parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, value))
+    parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, value |> cast))
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, String.t, map) :: map
@@ -97,7 +109,7 @@ defmodule Logfmt do
 
   @spec parse_char(nil, atom, String.t, String.t, map) :: map
   defp parse_char(nil, :ivalue, key, value, map) do
-    map |> Map.put key, value
+    map |> Map.put(key, value |> cast)
   end
 
   @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
@@ -122,6 +134,29 @@ defmodule Logfmt do
 
   @spec parse_char(nil, atom, boolean, String.t, String.t, map) :: map
   defp parse_char(nil, :qvalue, false, key, value, map) do
-    map |> Map.put key, value
+    map |> Map.put(key, value |> cast)
+  end
+
+  @spec cast(String.t) :: boolean
+  defp cast("true"), do: true
+
+  @spec cast(String.t) :: boolean
+  defp cast("false"), do: false
+
+  @spec cast(String.t) :: Float | Integer | String.t
+  defp cast(value)  do
+    integer = case Integer.parse(value) do
+      {integer, ""} -> integer
+      {_, _}        -> nil
+      :error        -> nil
+    end
+
+    float = case Float.parse(value) do
+      {float, ""} -> float
+      {_, _}      -> nil
+      :error      -> nil
+    end
+
+    integer || float || value
   end
 end
