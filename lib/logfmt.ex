@@ -80,27 +80,27 @@ defmodule Logfmt do
     map |> Map.put key, value
   end
 
-  @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
+  @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
   defp parse_char({"\\", rest}, :qvalue, false, key, value, map) do
     parse_char(next_grapheme(rest), :qvalue, true, key, value, map)
   end
 
-  @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
+  @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
   defp parse_char({char, rest}, :qvalue, true, key, value, map) do
     parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
   end
 
-  @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
+  @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
   defp parse_char({"\"", rest}, :qvalue, false, key, value, map) do
     parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, value))
   end
 
-  @spec parse_char({String.t, String.t}, atom, String.t, boolean, String.t, map) :: map
+  @spec parse_char({String.t, String.t}, atom, boolean, String.t, String.t, map) :: map
   defp parse_char({char, rest}, :qvalue, false, key, value, map) do
     parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
   end
 
-  @spec parse_char(nil, atom, String.t, boolean, String.t, map) :: map
+  @spec parse_char(nil, atom, boolean, String.t, String.t, map) :: map
   defp parse_char(nil, :qvalue, false, key, value, map) do
     map |> Map.put key, value
   end
