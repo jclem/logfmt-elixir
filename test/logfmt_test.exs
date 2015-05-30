@@ -12,4 +12,8 @@ defmodule LogfmtTest do
   test "parses single keys" do
     assert Logfmt.parse("key=\"value\" key2") == %{"key" => "value", "key2" => true}
   end
+
+  test "parses unfinished pairs" do
+    assert Logfmt.parse("key=\"value\" key2=") == %{"key" => "value", "key2" => true}
+  end
 end

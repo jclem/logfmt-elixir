@@ -66,6 +66,11 @@ defmodule Logfmt do
     parse_char(next_grapheme(rest), :garbage, map)
   end
 
+  @spec parse_char(nil, atom, String.t, map) :: map
+  def parse_char(nil, :equals, key, map) do
+    map |> Map.put(key, true)
+  end
+
   @spec parse_char({String.t, String.t}, atom, String.t, String.t, map) :: map
   def parse_char({char, rest}, :ivalue, key, value, map)
   when char <= " " or char == "\"" or char == "=" do
