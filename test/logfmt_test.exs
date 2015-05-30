@@ -8,4 +8,8 @@ defmodule LogfmtTest do
   test "parses quoted value" do
     assert Logfmt.parse("key=\"value\"") == %{"key" => "value"}
   end
+
+  test "parses single keys" do
+    assert Logfmt.parse("key=\"value\" key2") == %{"key" => "value", "key2" => true}
+  end
 end

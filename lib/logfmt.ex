@@ -12,14 +12,14 @@ defmodule Logfmt do
     parse_char(next_grapheme(rest), :key, char, map)
   end
 
-  @spec parse_char(nil, atom, map) :: map
-  def parse_char(nil, :garbage, map) do
-    map
-  end
-
   @spec parse_char({String.t, String.t}, atom, map) :: map
   def parse_char({_char, rest}, :garbage, map) do
     parse_char(next_grapheme(rest), :garbage, map)
+  end
+
+  @spec parse_char(nil, atom, map) :: map
+  def parse_char(nil, :garbage, map) do
+    map
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
@@ -43,6 +43,11 @@ defmodule Logfmt do
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
   def parse_char({_char, rest}, :key, key, map) do
     parse_char(next_grapheme(rest), :garbage, map |> Map.put(key, true))
+  end
+
+  @spec parse_char(nil, atom, String.t, map) :: map
+  def parse_char(nil, :key, key, map) do
+    map |> Map.put(key, true)
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
