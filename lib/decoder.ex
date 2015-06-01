@@ -1,118 +1,118 @@
 defmodule Logfmt.Decoder do
   import String, only: [next_grapheme: 1]
 
-  @spec decode(String.t) :: map
+  @spec decode(String.t) :: Keyword.t
   def decode(string) do
-    parse_char(next_grapheme(string), :garbage, %{})
+    parse_char(next_grapheme(string), :garbage, Keyword.new)
   end
 
-  @spec parse_char({String.t, String.t}, :garbage, map) :: map
-  defp parse_char({char, rest}, :garbage, map)
+  @spec parse_char({String.t, String.t}, :garbage, Keyword.t) :: Keyword.t
+  defp parse_char({char, rest}, :garbage, list)
   when char > " " and char != "\"" and char != "=" do
-    parse_char(next_grapheme(rest), :key, char, map)
+    parse_char(next_grapheme(rest), :key, char, list)
   end
 
-  @spec parse_char({String.t, String.t}, :garbage, map) :: map
-  defp parse_char({_char, rest}, :garbage, map) do
-    parse_char(next_grapheme(rest), :garbage, map)
+  @spec parse_char({String.t, String.t}, :garbage, Keyword.t) :: Keyword.t
+  defp parse_char({_char, rest}, :garbage, list) do
+    parse_char(next_grapheme(rest), :garbage, list)
   end
 
-  @spec parse_char(nil, :garbage, map) :: map
-  defp parse_char(nil, :garbage, map) do
-    map
+  @spec parse_char(nil, :garbage, Keyword.t) :: Keyword.t
+  defp parse_char(nil, :garbage, list) do
+    list
   end
 
-  @spec parse_char({String.t, String.t}, :key, String.t, map) :: map
-  defp parse_char({char, rest}, :key, key, map)
+  @spec parse_char({String.t, String.t}, :key, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({char, rest}, :key, key, list)
   when char > " " and char != "\"" and char != "=" do
-    parse_char(next_grapheme(rest), :key, key <> char, map)
+    parse_char(next_grapheme(rest), :key, key <> char, list)
   end
 
-  @spec parse_char({String.t, String.t}, :key, String.t, map) :: map
-  defp parse_char({"=", rest}, :key, key, map) do
-    parse_char(next_grapheme(rest), :equals, key, map)
+  @spec parse_char({String.t, String.t}, :key, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({"=", rest}, :key, key, list) do
+    parse_char(next_grapheme(rest), :equals, key, list)
   end
 
-  @spec parse_char({String.t, String.t}, :key, String.t, map) :: map
-  defp parse_char({_char, rest}, :key, key, map) do
-    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, true))
+  @spec parse_char({String.t, String.t}, :key, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({_char, rest}, :key, key, list) do
+    parse_char(next_grapheme(rest), :garbage, list |> put_value(key, true))
   end
 
-  @spec parse_char(nil, :key, String.t, map) :: map
-  defp parse_char(nil, :key, key, map) do
-    map |> put_value(key, true)
+  @spec parse_char(nil, :key, String.t, Keyword.t) :: Keyword.t
+  defp parse_char(nil, :key, key, list) do
+    list |> put_value(key, true)
   end
 
-  @spec parse_char({String.t, String.t}, :equals, String.t, map) :: map
-  defp parse_char({char, rest}, :equals, key, map)
+  @spec parse_char({String.t, String.t}, :equals, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({char, rest}, :equals, key, list)
   when char > " " and char != "\"" and char != "=" do
-    parse_char(next_grapheme(rest), :ivalue, key, char, map)
+    parse_char(next_grapheme(rest), :ivalue, key, char, list)
   end
 
-  @spec parse_char({String.t, String.t}, :equals, String.t, map) :: map
-  defp parse_char({"\"", rest}, :equals, key, map) do
-    parse_char(next_grapheme(rest), :qvalue, false, key, "", map)
+  @spec parse_char({String.t, String.t}, :equals, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({"\"", rest}, :equals, key, list) do
+    parse_char(next_grapheme(rest), :qvalue, false, key, "", list)
   end
 
-  @spec parse_char({String.t, String.t}, :equals, String.t, map) :: map
-  defp parse_char({_char, rest}, :equals, key, map) do
-    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, true))
+  @spec parse_char({String.t, String.t}, :equals, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({_char, rest}, :equals, key, list) do
+    parse_char(next_grapheme(rest), :garbage, list |> put_value(key, true))
   end
 
-  @spec parse_char(nil, :equals, String.t, map) :: map
-  defp parse_char(nil, :equals, key, map) do
-    map |> put_value(key, true)
+  @spec parse_char(nil, :equals, String.t, Keyword.t) :: Keyword.t
+  defp parse_char(nil, :equals, key, list) do
+    list |> put_value(key, true)
   end
 
-  @spec parse_char({String.t, String.t}, :ivalue, String.t, String.t, map) :: map
-  defp parse_char({char, rest}, :ivalue, key, value, map)
+  @spec parse_char({String.t, String.t}, :ivalue, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({char, rest}, :ivalue, key, value, list)
   when char <= " " or char == "\"" or char == "=" do
-    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, value))
+    parse_char(next_grapheme(rest), :garbage, list |> put_value(key, value))
   end
 
-  @spec parse_char({String.t, String.t}, :ivalue, String.t, String.t, map) :: map
-  defp parse_char({char, rest}, :ivalue, key, value, map) do
-    parse_char(next_grapheme(rest), :ivalue, key, value <> char, map)
+  @spec parse_char({String.t, String.t}, :ivalue, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({char, rest}, :ivalue, key, value, list) do
+    parse_char(next_grapheme(rest), :ivalue, key, value <> char, list)
   end
 
-  @spec parse_char(nil, :ivalue, String.t, String.t, map) :: map
-  defp parse_char(nil, :ivalue, key, value, map) do
-    map |> put_value(key, value)
+  @spec parse_char(nil, :ivalue, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char(nil, :ivalue, key, value, list) do
+    list |> put_value(key, value)
   end
 
-  @spec parse_char({String.t, String.t}, :qvalue, false, String.t, String.t, map) :: map
-  defp parse_char({"\\", rest}, :qvalue, false, key, value, map) do
-    parse_char(next_grapheme(rest), :qvalue, true, key, value, map)
+  @spec parse_char({String.t, String.t}, :qvalue, false, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({"\\", rest}, :qvalue, false, key, value, list) do
+    parse_char(next_grapheme(rest), :qvalue, true, key, value, list)
   end
 
-  @spec parse_char({String.t, String.t}, :qvalue, true, String.t, String.t, map) :: map
-  defp parse_char({char, rest}, :qvalue, true, key, value, map) do
-    parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
+  @spec parse_char({String.t, String.t}, :qvalue, true, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({char, rest}, :qvalue, true, key, value, list) do
+    parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, list)
   end
 
-  @spec parse_char({String.t, String.t}, :qvalue, false, String.t, String.t, map) :: map
-  defp parse_char({"\"", rest}, :qvalue, false, key, value, map) do
-    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, value))
+  @spec parse_char({String.t, String.t}, :qvalue, false, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({"\"", rest}, :qvalue, false, key, value, list) do
+    parse_char(next_grapheme(rest), :garbage, list |> put_value(key, value))
   end
 
-  @spec parse_char({String.t, String.t}, :qvalue, false, String.t, String.t, map) :: map
-  defp parse_char({char, rest}, :qvalue, false, key, value, map) do
-    parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
+  @spec parse_char({String.t, String.t}, :qvalue, false, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char({char, rest}, :qvalue, false, key, value, list) do
+    parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, list)
   end
 
-  @spec parse_char(nil, :qvalue, false, String.t, String.t, map) :: map
-  defp parse_char(nil, :qvalue, false, key, value, map) do
-    map |> put_value(key, value)
+  @spec parse_char(nil, :qvalue, false, String.t, String.t, Keyword.t) :: Keyword.t
+  defp parse_char(nil, :qvalue, false, key, value, list) do
+    list |> put_value(key, value)
   end
 
-  @spec put_value(map, String.t, boolean) :: map
-  defp put_value(map, key, value) when is_boolean(value) do
-    map |> Map.put(key, value)
+  @spec put_value(Keyword.t, String.t, boolean) :: Keyword.t
+  defp put_value(list, key, value) when is_boolean(value) do
+    list ++ Keyword.new([{key |> String.to_atom, value}])
   end
 
-  @spec put_value(map, String.t, String.t) :: map
-  defp put_value(map, key, value) do
-    map |> Map.put(key, value |> cast)
+  @spec put_value(Keyword.t, String.t, String.t) :: Keyword.t
+  defp put_value(list, key, value) do
+    list ++ Keyword.new([{key |> String.to_atom, value |> cast}])
   end
 
   @spec cast(String.t) :: true
