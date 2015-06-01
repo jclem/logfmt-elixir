@@ -3,22 +3,26 @@ defmodule LogfmtEncodeTest do
   import Logfmt, only: [encode: 1]
 
   test "encodes an unquoted key=value pair" do
-    assert encode(%{"foo" => "bar"}) == "foo=bar"
+    assert encode([foo: "bar"]) == "foo=bar"
   end
 
   test "encodes multiple pairs" do
-    assert encode(%{"foo" => "bar", "baz" => "qux"}) == "baz=qux foo=bar"
+    assert encode([foo: "bar", baz: "qux"]) == "foo=bar baz=qux"
   end
 
   test "encodes an quoted value" do
-    assert encode(%{"foo" => "bar baz"}) == ~s(foo="bar baz")
+    assert encode([foo: "bar baz"]) == ~s(foo="bar baz")
   end
 
   test "encodes a boolean" do
-    assert encode(%{"foo" => true}) == "foo=true"
+    assert encode([foo: true]) == "foo=true"
   end
 
   test "encodes a number" do
-    assert encode(%{"foo" => 1}) == "foo=1"
+    assert encode([foo: 1]) == "foo=1"
+  end
+
+  test "encodes a duplicate key" do
+    assert encode([foo: 1, foo: 2]) == "foo=1 foo=2"
   end
 end
