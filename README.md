@@ -7,7 +7,7 @@ iex> Logfmt.decode "foo=bar"
 [foo: "bar"]
 ```
 
-Encode maps into log lines:
+Encode keyword lists into log lines:
 
 ```elixir
 iex> Logfmt.encode [foo: "bar"]
