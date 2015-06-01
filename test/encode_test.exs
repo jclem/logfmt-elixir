@@ -6,6 +6,10 @@ defmodule LogfmtEncodeTest do
     assert encode(%{"foo" => "bar"}) == "foo=bar"
   end
 
+  test "encodes multiple pairs" do
+    assert encode(%{"foo" => "bar", "baz" => "qux"}) == "baz=qux foo=bar"
+  end
+
   test "encodes an quoted value" do
     assert encode(%{"foo" => "bar baz"}) == ~s(foo="bar baz")
   end
