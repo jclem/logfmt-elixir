@@ -4,12 +4,12 @@ defmodule Logfmt.Encoder do
     Enum.reduce map, "", &encode_pair/2
   end
 
-  @spec encode_pair({String.t | atom, String.t | atom}, String.t) :: String.t
+  @spec encode_pair({String.t | atom, String.t | boolean | number}, String.t) :: String.t
   defp encode_pair({key, value}, "") do
     "#{key}=#{value |> encode_value}"
   end
 
-  @spec encode_pair({String.t | atom, String.t | atom}, String.t) :: String.t
+  @spec encode_pair({String.t | atom, String.t | boolean | number}, String.t) :: String.t
   defp encode_pair({key, value}, line) do
     "#{line} #{key}=#{value |> encode_value}"
   end
