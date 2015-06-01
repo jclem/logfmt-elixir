@@ -22,17 +22,20 @@ defmodule Logfmt do
   end
 
   @doc ~S"""
-  Encodes the given keyword list into a Logfmt-style line
+  Encodes the given Dict into a Logfmt-style line
 
   ## Examples
 
       iex> Logfmt.encode [foo: "bar"]
       "foo=bar"
 
+      iex> Logfmt.encode %{"foo" => "bar"}
+      "foo=bar"
+
       iex> Logfmt.encode [foo: "bar baz"]
       "foo=\"bar baz\""
   """
-  @spec encode(Keyword.t) :: String.t
+  @spec encode(Dict.t) :: String.t
   def encode(list) do
     Logfmt.Encoder.encode(list)
   end
