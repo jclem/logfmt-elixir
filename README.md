@@ -17,6 +17,33 @@ iex> Logfmt.encode %{foo: "bar"}
 "foo=bar"
 ```
 
+## Type Coercion
+
+When decoding a log line, Logfmt will coerce some strings into booleans and
+numbers:
+
+```elixir
+iex> Logfmt.decode "foo=true"
+%{"foo" => true}
+
+iex> Logfmt.decode "foo=-1.2e9"
+%{"foo" => -1.2e9}
+```
+
+In the future, this may be optional, or more robust. For example, it might make
+sense for `"foo=true"` to decode into `%{"foo" => true}`, but `~s(foo="true")`
+to decode into `%{"foo" => "true"}`.
+
+Another option might be to allow the user to provide a formatting map to the
+`decode` function, which expects coercion functions as values:
+
+```elixir
+iex> "foo=1 bar=2" |> Logfmt.decode %{
+...> foo: &Logfmt.TypeCoercion.parse_integer/1
+...> }
+%{"foo" => 1, "bar" => "2"}
+```
+
 ## Why decode into maps?
 
 Originally, this library both decoded and encoded maps. However, this was
