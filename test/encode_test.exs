@@ -9,4 +9,12 @@ defmodule LogfmtEncodeTest do
   test "encodes an quoted value" do
     assert encode(%{"foo" => "bar baz"}) == ~s(foo="bar baz")
   end
+
+  test "encodes a boolean" do
+    assert encode(%{"foo" => true}) == "foo=true"
+  end
+
+  test "encodes a number" do
+    assert encode(%{"foo" => 1}) == "foo=1"
+  end
 end
