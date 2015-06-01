@@ -6,32 +6,17 @@ defmodule Logfmt do
 
   ## Examples
 
-      iex> Logfmt.decode "foo=bar"
-      %{"foo" => "bar"}
+      iex> Logfmt.decode "foo=bar baz=qux"
+      %{"foo" => "bar", "baz" => "qux"}
 
-      iex> Logfmt.decode ~s(foo="bar")
-      %{"foo" => "bar"}
-
-      iex> Logfmt.decode "foo"
-      %{"foo" => true}
-
-      iex> Logfmt.decode "foo="
-      %{"foo" => true}
-
-      iex> Logfmt.decode ~S(foo="\"bar\"")
-      %{"foo" => "\"bar\""}
+      iex> Logfmt.decode ~s(foo="bar baz")
+      %{"foo" => "bar baz"}
 
       iex> Logfmt.decode "foo=true"
       %{"foo" => true}
 
-      iex> Logfmt.decode "foo=false"
-      %{"foo" => false}
-
-      iex> Logfmt.decode "foo=0"
-      %{"foo" => 0}
-
-      iex> Logfmt.decode "foo=1.2"
-      %{"foo" => 1.2}
+      iex> Logfmt.decode "foo=1"
+      %{"foo" => 1}
   """
   @spec decode(String.t) :: map
   def decode(string) do
@@ -87,8 +72,8 @@ defmodule Logfmt do
   end
 
   @spec parse_char({String.t, String.t}, atom, String.t, map) :: map
-  defp parse_char({_char, rest}, :equals, _key, map) do
-    parse_char(next_grapheme(rest), :garbage, map)
+  defp parse_char({_char, rest}, :equals, key, map) do
+    parse_char(next_grapheme(rest), :garbage, map |> put_value(key, true))
   end
 
   @spec parse_char(nil, atom, String.t, map) :: map
