@@ -6,3 +6,10 @@ Decode log lines into maps:
 iex> Logfmt.decode "foo=bar"
 %{"foo" => "bar"}
 ```
+
+Encode maps into log lines:
+
+```elixir
+iex> Logfmt.encode %{"foo" => "bar"}
+"foo=bar"
+```
