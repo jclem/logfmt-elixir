@@ -1,4 +1,19 @@
 defmodule Logfmt.Encoder do
+  @moduledoc ~S"""
+  Encode a `Dict` into a logfmt-style log line.
+
+  ## Examples
+
+      iex> Logfmt.encode [foo: "bar"]
+      "foo=bar"
+
+      iex> Logfmt.encode [foo: "bar baz", qux: true]
+      "foo=\"bar baz\" qux=true"
+  """
+
+  @doc """
+  See [`Logfmt.encode`](/logfmt/Logfmt.html#encode/1).
+  """
   @spec encode(Dict.t) :: String.t
   def encode(list) do
     Enum.reduce list, "", &encode_pair/2

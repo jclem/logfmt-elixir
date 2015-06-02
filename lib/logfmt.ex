@@ -1,4 +1,17 @@
 defmodule Logfmt do
+  @moduledoc """
+  Decodes and encodes logfmt-style log lines
+
+  In [logfmt][logfmt]-style log lines, data is encoded as a string of
+  `"key-value"` pairs. Logfmt can encode a `Dict` into a string in this format,
+  provided that its value types are `String.t`, `number`, and `boolean`.
+
+  It will decode a line in this format into a map, and attempt to coerce numbers
+  and booleans into integers, floats, and booleans.
+
+  [logfmt]: https://brandur.org/logfmt
+  """
+
   @doc ~S"""
   Decodes the given line into a map
 

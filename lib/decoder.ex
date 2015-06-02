@@ -1,6 +1,20 @@
 defmodule Logfmt.Decoder do
+  @moduledoc """
+  Decodes a logfmt-style log line into a `map`.
+
+  ## Examples
+
+      iex> Logfmt.decode "foo=bar"
+      %{"foo" => "bar"}
+
+      iex> Logfmt.decode "foo=true"
+      %{"foo" => true}
+  """
   import String, only: [next_grapheme: 1]
 
+  @doc """
+  See [`Logfmt.decode`](/logfmt/Logfmt.html#decode/1).
+  """
   @spec decode(String.t) :: map
   def decode(string) do
     parse_char(next_grapheme(string), :garbage, Map.new)
