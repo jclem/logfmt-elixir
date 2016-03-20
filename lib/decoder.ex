@@ -143,13 +143,16 @@ defmodule Logfmt.Decoder do
       :error        -> nil
     end
 
-    float = case Float.parse(value) do
-      {float, ""} -> float
-      {_, _}      -> nil
-      :error      -> nil
+    # https://github.com/elixir-lang/elixir/pull/3863
+    float = try do
+      case Float.parse(value) do
+        {float, ""} -> float
+        {_, _}      -> nil
+        :error      -> nil
+      end
+    rescue ArgumentError -> value
     end
 
     integer || float || value
-  rescue ArgumentError -> value # https://github.com/elixir-lang/elixir/pull/3863/files
   end
 end
