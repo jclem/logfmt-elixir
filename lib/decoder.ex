@@ -150,7 +150,6 @@ defmodule Logfmt.Decoder do
     end
 
     integer || float || value
-  rescue _err -> ArgumentError # https://github.com/elixir-lang/elixir/pull/3863/files
-    value
+  rescue ArgumentError -> value # https://github.com/elixir-lang/elixir/pull/3863/files
   end
 end
