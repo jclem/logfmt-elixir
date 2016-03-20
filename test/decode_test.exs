@@ -82,4 +82,8 @@ defmodule LogfmtDecodeTest do
   test "decodes exponential floats" do
     assert decode("foo=1.2e9") == %{"foo" => 1.2e9}
   end
+
+  test "decodes a float exceeding float size as a string" do
+    assert decode("foo=358.0e5437") == %{"foo" => "358.0e5437"}
+  end
 end
