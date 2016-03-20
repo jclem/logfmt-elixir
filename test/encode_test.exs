@@ -1,5 +1,6 @@
 defmodule LogfmtEncodeTest do
   use ExUnit.Case
+  doctest Logfmt.Encoder
   import Logfmt, only: [encode: 1]
 
   test "encodes an unquoted key=value pair" do

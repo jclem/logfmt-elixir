@@ -1,5 +1,6 @@
 defmodule LogfmtDecodeTest do
   use ExUnit.Case
+  doctest Logfmt.Decoder
   import Logfmt, only: [decode: 1]
 
   test "decodes the empty string" do
