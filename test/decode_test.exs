@@ -86,4 +86,8 @@ defmodule LogfmtDecodeTest do
   test "decodes a float exceeding float size as a string" do
     assert decode("foo=358.0e5437") == %{"foo" => "358.0e5437"}
   end
+
+  test "decodes nil " do
+    assert decode("foo=nil") == %{"foo" => nil}
+  end
 end
