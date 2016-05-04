@@ -30,4 +30,8 @@ defmodule LogfmtEncodeTest do
   test "encodes a duplicate key" do
     assert encode([foo: 1, foo: 2]) == "foo=1 foo=2"
   end
+
+  test "encodes nil" do
+    assert encode([foo: nil]) == "foo=nil"
+  end
 end
