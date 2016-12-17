@@ -10,7 +10,6 @@ defmodule Logfmt.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/jclem/logfmt-elixir",
-     maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
      deps: deps,
 
      # Hex
@@ -50,6 +49,7 @@ defmodule Logfmt.Mixfile do
     [contributors: ["Jonathan Clem <jotclem@gmail.com>"],
     licenses: ["MIT"],
     links: %{"GitHub" => "https://github.com/jclem/logfmt-elixir"},
+    maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
     files: ~w(mix.exs lib README.md)]
   end
 end
