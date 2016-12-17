@@ -6,7 +6,7 @@ defmodule Logfmt.Mixfile do
   def project do
     [app: :logfmt,
      version: @version,
-     elixir: "~> 1.1",
+     elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/jclem/logfmt-elixir",
