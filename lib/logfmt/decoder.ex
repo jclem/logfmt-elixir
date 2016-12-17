@@ -135,6 +135,9 @@ defmodule Logfmt.Decoder do
   @spec coerce_value(String.t) :: false
   defp coerce_value("false"), do: false
 
+  @spec coerce_value(String.t) :: nil
+  defp coerce_value("nil"), do: nil
+
   @spec coerce_value(String.t) :: number | String.t
   defp coerce_value(value)  do
     integer = case Integer.parse(value) do
