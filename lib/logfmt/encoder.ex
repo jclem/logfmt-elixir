@@ -45,9 +45,9 @@ defmodule Logfmt.Encoder do
     end
   end
 
-  @spec encode_value(boolean | number) :: boolean | number
-  defp encode_value(value) when is_boolean(value) or is_number(value), do: value
-
   @spec encode_value(nil) :: String.t
   defp encode_value(value) when is_nil(value), do: "nil"
+
+  @spec encode_value(boolean | number | atom) :: boolean | number | atom
+  defp encode_value(value) when is_boolean(value) or is_number(value) or is_atom(value), do: value
 end
