@@ -11,6 +11,14 @@ defimpl Logfmt.ValueEncoder, for: Atom do
   def encode(atom), do: Atom.to_string(atom)
 end
 
+defimpl Logfmt.ValueEncoder, for: Integer do
+  def encode(int), do: Integer.to_string(int)
+end
+
+defimpl Logfmt.ValueEncoder, for: Float do
+  def encode(float), do: Float.to_string(float)
+end
+
 defimpl Logfmt.ValueEncoder, for: NaiveDateTime do
   def encode(naive_date_time), do: NaiveDateTime.to_iso8601(naive_date_time)
 end
@@ -19,13 +27,10 @@ defimpl Logfmt.ValueEncoder, for: DateTime do
   def encode(date_time), do: DateTime.to_iso8601(date_time)
 end
 
-defimpl Logfmt.ValueEncoder, for: Integer do
-  def encode(int), do: Integer.to_string(int)
+defimpl Logfmt.ValueEncoder, for: PID do
+  def encode(pid), do: inspect(pid)
 end
 
-defimpl Logfmt.ValueEncoder, for: Float do
-  def encode(float), do: Float.to_string(float)
-end
 
 defmodule Logfmt.Encoder do
   @moduledoc ~S"""

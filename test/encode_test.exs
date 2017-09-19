@@ -48,4 +48,10 @@ defmodule LogfmtEncodeTest do
     {:ok, dt, _} = DateTime.from_iso8601("2017-09-19T13:18:15Z")
     assert encode([foo: dt]) == "foo=2017-09-19T13:18:15Z"
   end
+
+  test "encodes a PID value" do
+    p = self()
+    value = inspect(p)
+    assert "foo=" <> ^value = encode([foo: p])
+  end
 end
