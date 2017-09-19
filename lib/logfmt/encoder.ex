@@ -50,7 +50,7 @@ defmodule Logfmt.Encoder do
       # in case you wish to get back an iolist
       :iolist -> result
       # otherwise default to returning a binary
-      _ -> Enum.join(List.flatten(result))
+      _ -> Enum.join(result)
     end
   end
 
@@ -60,7 +60,8 @@ defmodule Logfmt.Encoder do
     cond do
       # originally I wanted to check if the string contained both ' and "
       # the quoting would require escaping those characters first
-      str =~ ~r/[\s\=]/ -> ["\"", str, "\""]
+      String.contains?(str, " ") or String.contains?(str, "=") ->
+        ["\"", str, "\""]
       true -> str
     end
   end
@@ -68,14 +69,12 @@ defmodule Logfmt.Encoder do
   defp encode_pair({key, value}, []) do
     # this is called for the first item in the list, since the accumulator
     # would be empty at that point.
-    # in the second variant of the function, a spacer " " must be added between
-    # the previous accumulator values and the current key value pair
-    [[key, :=, encode_value(value)]]
+    [[encode_value(key), "=", encode_value(value)]]
   end
 
   defp encode_pair({key, value}, acc) do
     # if an options keyword list was passed in, the " " could be replaced
     # with a user configurable option, but for now we'll keep the space.
-    [acc, " ", [key, :=, encode_value(value)]]
+    [acc, " ", [encode_value(key), "=", encode_value(value)]]
   end
 end
