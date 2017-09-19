@@ -31,6 +31,9 @@ defimpl Logfmt.ValueEncoder, for: PID do
   def encode(pid), do: inspect(pid)
 end
 
+defimpl Logfmt.ValueEncoder, for: Reference do
+  def encode(ref), do: inspect(ref)
+end
 
 defmodule Logfmt.Encoder do
   @moduledoc ~S"""

@@ -54,4 +54,10 @@ defmodule LogfmtEncodeTest do
     value = inspect(p)
     assert "foo=" <> ^value = encode([foo: p])
   end
+
+  test "encodes a Reference value" do
+    ref = make_ref()
+    value = inspect(ref)
+    assert "foo=" <> ^value = encode([foo: ref])
+  end
 end
