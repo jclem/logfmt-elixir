@@ -38,4 +38,14 @@ defmodule LogfmtEncodeTest do
   test "encodes nil" do
     assert encode([foo: nil]) == "foo=nil"
   end
+
+  test "encodes NaiveDateTime value" do
+    {:ok, dt} = NaiveDateTime.from_iso8601("2017-09-19T13:18:15")
+    assert encode([foo: dt]) == "foo=2017-09-19T13:18:15"
+  end
+
+  test "encodes DateTime value" do
+    {:ok, dt, _} = DateTime.from_iso8601("2017-09-19T13:18:15Z")
+    assert encode([foo: dt]) == "foo=2017-09-19T13:18:15Z"
+  end
 end

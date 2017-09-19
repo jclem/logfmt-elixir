@@ -12,11 +12,11 @@ defimpl Logfmt.ValueEncoder, for: Atom do
 end
 
 defimpl Logfmt.ValueEncoder, for: NaiveDateTime do
-  def encode(naive_date_time), do: NaiveDateTime.to_string(naive_date_time)
+  def encode(naive_date_time), do: NaiveDateTime.to_iso8601(naive_date_time)
 end
 
 defimpl Logfmt.ValueEncoder, for: DateTime do
-  def encode(date_time), do: DateTime.to_string(date_time)
+  def encode(date_time), do: DateTime.to_iso8601(date_time)
 end
 
 defimpl Logfmt.ValueEncoder, for: Integer do
