@@ -49,7 +49,7 @@ defmodule Logfmt.Encoder do
   """
 
   @doc """
-  See [`Logfmt.encode`](/logfmt/Logfmt.html#encode/1).
+  See [`Logfmt.encode`](/logfmt/Logfmt.html#encode/2).
   """
   @spec encode(Dict.t, options :: Keyword.t) :: String.t
   def encode(list, options \\ []) do
