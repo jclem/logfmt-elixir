@@ -16,7 +16,11 @@ defmodule Logfmt.Encoder do
   """
   @spec encode(Dict.t, options :: Keyword.t) :: String.t
   def encode(list, options \\ []) do
-    result = Enum.reduce(list, [], &encode_pair/2)
+    result =
+      list
+      |> Enum.map(&encode_pair/1)
+      |> Enum.intersperse(" ")
+
     case options[:output] do
       # in case you wish to get back an iolist
       :iolist -> result
@@ -28,24 +32,16 @@ defmodule Logfmt.Encoder do
   @spec encode_value(value :: term) :: String.t
   defp encode_value(value) do
     str = Logfmt.ValueEncoder.encode(value)
-    cond do
-      # originally I wanted to check if the string contained both ' and "
-      # the quoting would require escaping those characters first
-      String.contains?(str, " ") or String.contains?(str, "=") ->
-        ["\"", str, "\""]
-      true -> str
+    if String.match?(str, ~r/\s/) or String.contains?(str, "=") do
+      ["\"", str, "\""]
+    else
+      str
     end
   end
 
-  defp encode_pair({key, value}, []) do
-    # this is called for the first item in the list, since the accumulator
-    # would be empty at that point.
-    [[encode_value(key), "=", encode_value(value)]]
-  end
-
-  defp encode_pair({key, value}, acc) do
+  defp encode_pair({key, value}) do
     # if an options keyword list was passed in, the " " could be replaced
     # with a user configurable option, but for now we'll keep the space.
-    [acc, " ", [encode_value(key), "=", encode_value(value)]]
+    [encode_value(key), "=", encode_value(value)]
   end
 end
