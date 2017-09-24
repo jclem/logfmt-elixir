@@ -1,7 +1,7 @@
 defmodule LogfmtEncodeTest do
   use ExUnit.Case
   doctest Logfmt.Encoder
-  import Logfmt, only: [encode: 1]
+  import Logfmt, only: [encode: 1, encode: 2]
 
   test "encodes an unquoted key=value pair" do
     assert encode([foo: "bar"]) == "foo=bar"
@@ -37,5 +37,21 @@ defmodule LogfmtEncodeTest do
 
   test "encodes nil" do
     assert encode([foo: nil]) == "foo=nil"
+  end
+
+  test "encodes a PID value" do
+    p = self()
+    value = inspect(p)
+    assert "foo=" <> ^value = encode([foo: p])
+  end
+
+  test "encodes a Reference value" do
+    ref = make_ref()
+    value = inspect(ref)
+    assert "foo=" <> ^value = encode([foo: ref])
+  end
+
+  test "encodes to an iolist" do
+    assert [["foo", "=", ["\"", "bar baz", "\""]], " ", ["bar", "=", "foobar"]] == encode([foo: "bar baz", bar: :foobar], [output: :iolist])
   end
 end

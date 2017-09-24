@@ -17,6 +17,20 @@ iex> Logfmt.encode %{foo: "bar"}
 "foo=bar"
 ```
 
+Custom types can encoded by implementing the ValueEncoder procotol for it.
+
+For example to encode DateTime and NaiveDateTime and implementation could look like this:
+
+```elixir
+defimpl Logfmt.ValueEncoder, for: NaiveDateTime do
+  def encode(naive_date_time), do: NaiveDateTime.to_iso8601(naive_date_time)
+end
+
+defimpl Logfmt.ValueEncoder, for: DateTime do
+  def encode(date_time), do: DateTime.to_iso8601(date_time)
+end
+```
+
 ## Type Coercion
 
 When decoding a log line, Logfmt will coerce some strings into booleans and

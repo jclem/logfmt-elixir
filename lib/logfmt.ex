@@ -37,6 +37,12 @@ defmodule Logfmt do
   @doc ~S"""
   Encodes the given Dict into a Logfmt-style line
 
+  Optionally a list of options can be given to change the encode behaviour
+
+  Options:
+  * `output` - if set to :iolist, an iolist is returned,
+               any other value will return a binary
+
   ## Examples
 
       iex> Logfmt.encode [foo: "bar"]
@@ -47,9 +53,12 @@ defmodule Logfmt do
 
       iex> Logfmt.encode [foo: "bar baz"]
       "foo=\"bar baz\""
+
+      iex> Logfmt.encode [foo: "bar baz"], [output: :iolist]
+      [["foo", "=", ["\"", "bar baz", "\""]]]
   """
-  @spec encode(Dict.t) :: String.t
-  def encode(list) do
-    Logfmt.Encoder.encode(list)
+  @spec encode(Dict.t, options :: Keyword.t) :: String.t
+  def encode(list, options \\ []) do
+    Logfmt.Encoder.encode(list, options)
   end
 end
