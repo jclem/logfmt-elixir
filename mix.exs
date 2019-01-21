@@ -10,11 +10,11 @@ defmodule Logfmt.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/jclem/logfmt-elixir",
-     deps: deps,
+     deps: deps(),
 
      # Hex
-     description: description,
-     package: package
+     description: description(),
+     package: package()
      ]
   end
 
