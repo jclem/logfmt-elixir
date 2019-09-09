@@ -12,6 +12,6 @@ defmodule LogfmtTest do
   end
 
   defp roundtrip(string) do
-    string |> Logfmt.decode |> Logfmt.encode
+    string |> Logfmt.decode() |> Logfmt.encode()
   end
 end

@@ -1,5 +1,5 @@
 defprotocol Logfmt.ValueEncoder do
-  @spec encode(value :: term) :: String.t
+  @spec encode(value :: term) :: String.t()
   def encode(value)
 end
 
