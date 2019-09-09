@@ -29,7 +29,7 @@ defmodule Logfmt do
       iex> Logfmt.decode "foo=1"
       %{"foo" => 1}
   """
-  @spec decode(String.t) :: map
+  @spec decode(String.t()) :: map
   def decode(string) do
     Logfmt.Decoder.decode(string)
   end
@@ -57,7 +57,7 @@ defmodule Logfmt do
       iex> Logfmt.encode [foo: "bar baz"], [output: :iolist]
       [["foo", "=", ["\"", "bar baz", "\""]]]
   """
-  @spec encode(Dict.t, options :: Keyword.t) :: String.t
+  @spec encode(Dict.t(), options :: Keyword.t()) :: String.t()
   def encode(list, options \\ []) do
     Logfmt.Encoder.encode(list, options)
   end

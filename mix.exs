@@ -4,18 +4,19 @@ defmodule Logfmt.Mixfile do
   @version "3.3.0"
 
   def project do
-    [app: :logfmt,
-     version: @version,
-     elixir: "~> 1.3",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     source_url: "https://github.com/jclem/logfmt-elixir",
-     deps: deps,
+    [
+      app: :logfmt,
+      version: @version,
+      elixir: "~> 1.3",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      source_url: "https://github.com/jclem/logfmt-elixir",
+      deps: deps(),
 
-     # Hex
-     description: description,
-     package: package
-     ]
+      # Hex
+      description: description(),
+      package: package()
+    ]
   end
 
   # Configuration for the OTP application
@@ -35,8 +36,7 @@ defmodule Logfmt.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:earmark, "~> 1.0.3", only: :dev},
-     {:ex_doc, "~> 0.14.5", only: :dev}]
+    [{:earmark, "~> 1.0.3", only: :dev}, {:ex_doc, "~> 0.14.5", only: :dev}]
   end
 
   defp description do
@@ -46,10 +46,12 @@ defmodule Logfmt.Mixfile do
   end
 
   defp package do
-    [contributors: ["Jonathan Clem <jotclem@gmail.com>"],
-    licenses: ["MIT"],
-    links: %{"GitHub" => "https://github.com/jclem/logfmt-elixir"},
-    maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
-    files: ~w(mix.exs lib README.md)]
+    [
+      contributors: ["Jonathan Clem <jotclem@gmail.com>"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/jclem/logfmt-elixir"},
+      maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
+      files: ~w(mix.exs lib README.md)
+    ]
   end
 end

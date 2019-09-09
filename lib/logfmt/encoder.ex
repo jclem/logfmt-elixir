@@ -14,7 +14,7 @@ defmodule Logfmt.Encoder do
   @doc """
   See [`Logfmt.encode`](/logfmt/Logfmt.html#encode/2).
   """
-  @spec encode(Dict.t, options :: Keyword.t) :: String.t
+  @spec encode(Dict.t(), options :: Keyword.t()) :: String.t()
   def encode(list, options \\ []) do
     result =
       list
@@ -29,9 +29,10 @@ defmodule Logfmt.Encoder do
     end
   end
 
-  @spec encode_value(value :: term) :: String.t
+  @spec encode_value(value :: term) :: String.t()
   defp encode_value(value) do
     str = Logfmt.ValueEncoder.encode(value)
+
     if String.match?(str, ~r/\s/) or String.contains?(str, "=") do
       ["\"", str, "\""]
     else
