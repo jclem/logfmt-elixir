@@ -23,6 +23,14 @@ defmodule LogfmtEncodeTest do
     assert encode(foo: "bar=baz") == ~s(foo="bar=baz")
   end
 
+  test ~s{escape a value with "} do
+    assert encode(foo: ~s{hello "world"}) == ~s(foo="hello \\"world\\"")
+  end
+
+  test "escape a value with a new line" do
+    assert encode(foo: ~s{a b\nc d\ne f\n}) == ~s(foo="a b\\nc d\\ne f\\n")
+  end
+
   test "encodes a boolean" do
     assert encode(foo: true) == "foo=true"
   end
