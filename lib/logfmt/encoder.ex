@@ -31,15 +31,17 @@ defmodule Logfmt.Encoder do
 
   @spec encode_value(value :: term) :: String.t()
   defp encode_value(value) do
-    str =
-      value
-      |> Logfmt.ValueEncoder.encode()
-      |> escape()
+    str = Logfmt.ValueEncoder.encode(value)
 
-    if String.match?(str, ~r/\s/) or String.contains?(str, "=") do
-      ["\"", str, "\""]
-    else
-      str
+    case deduce_string_style(str) do
+      :unquoted ->
+        str
+
+      :quoted ->
+        ["\"", str, "\""]
+
+      :quoted_and_escaped ->
+        ["\"", escape(str), "\""]
     end
   end
 
@@ -49,28 +51,39 @@ defmodule Logfmt.Encoder do
     [encode_value(key), "=", encode_value(value)]
   end
 
-  defp needs_escaping?(<<>>),
-    do: false
+  defp deduce_string_style(string),
+    do: deduce_string_style(string, :unquoted)
 
-  defp needs_escaping?(<<c, _rest::binary>>) when c <= 0x1F,
-    do: true
+  defp deduce_string_style(<<>>, acc),
+    do: acc
 
-  defp needs_escaping?(<<"\"", _rest::binary>>),
-    do: true
+  defp deduce_string_style(<<c, _rest::binary>>, _acc) when c <= 0x1F,
+    do: :quoted_and_escaped
 
-  defp needs_escaping?(<<"\\", _rest::binary>>),
-    do: true
+  defp deduce_string_style(<<" ", rest::binary>>, _acc),
+    do: deduce_string_style(rest, :quoted)
 
-  defp needs_escaping?(<<_c, rest::binary>>),
-    do: needs_escaping?(rest)
+  defp deduce_string_style(<<"\"", _rest::binary>>, _acc),
+    do: :quoted_and_escaped
 
-  defp escape(string) do
-    if needs_escaping?(string) do
-      escape(string, "")
-    else
-      string
+  defp deduce_string_style(<<"=", rest::binary>>, _acc),
+    do: deduce_string_style(rest, :quoted)
+
+  defp deduce_string_style(<<"\\", rest::binary>>, acc) do
+    case acc do
+      :unquoted ->
+        deduce_string_style(rest, :unquoted)
+
+      :quoted ->
+        deduce_string_style(rest, :quoted_and_escaped)
     end
   end
+
+  defp deduce_string_style(<<_c, rest::binary>>, acc),
+    do: deduce_string_style(rest, acc)
+
+  defp escape(string),
+    do: escape(string, "")
 
   defp escape("", acc),
     do: acc
