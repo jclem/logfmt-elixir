@@ -1,4 +1,4 @@
-# Logfmt [![Build Status](https://travis-ci.org/jclem/logfmt-elixir.svg?branch=master)](https://travis-ci.org/jclem/logfmt-elixir)
+# Logfmt [![Build Status](https://github.com/jclem/logfmt-elixir/workflows/CI/badge.svg)](https://github.com/jclem/logfmt-elixir/actions)
 
 Decode log lines into maps:
 
