@@ -23,6 +23,26 @@ defmodule LogfmtEncodeTest do
     assert encode(foo: "bar=baz") == ~s(foo="bar=baz")
   end
 
+  test ~s{escape a value with "} do
+    assert encode(foo: ~s{hello "world"}) == ~s(foo="hello \\"world\\"")
+  end
+
+  test "escape a value with a new line" do
+    assert encode(foo: ~s{a b\nc d\ne f\n}) == ~s(foo="a b\\nc d\\ne f\\n")
+  end
+
+  test "value with \\ but no spaces does not require quotes" do
+    assert encode(foo: "t3st1\\t3st2") == "foo=t3st1\\t3st2"
+  end
+
+  test ~s{value with " but no spaces requires quotes and escapes anyway} do
+    assert encode(foo: ~s{t3st1"t3st2}) == ~s{foo="t3st1\\"t3st2"}
+  end
+
+  test ~s{value with control character but no spaces requires quotes and escapes anyway} do
+    assert encode(foo: ~s{t3st1\nt3st2}) == ~s{foo="t3st1\\nt3st2"}
+  end
+
   test "encodes a boolean" do
     assert encode(foo: true) == "foo=true"
   end
