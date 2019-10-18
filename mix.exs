@@ -36,7 +36,7 @@ defmodule Logfmt.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:earmark, "~> 1.0.3", only: :dev}, {:ex_doc, "~> 0.14.5", only: :dev}]
+    [{:earmark, "~> 1.4.2", only: :dev}, {:ex_doc, "~> 0.21.2", only: :dev}]
   end
 
   defp description do
