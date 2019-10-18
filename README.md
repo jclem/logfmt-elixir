@@ -1,4 +1,4 @@
-# Logfmt [![Build Status](https://github.com/jclem/logfmt-elixir/workflows/CI/badge.svg)](https://github.com/jclem/logfmt-elixir/actions)
+# Logfmt [![Build Status](https://github.com/jclem/logfmt-elixir/workflows/CI/badge.svg)](https://github.com/jclem/logfmt-elixir/actions?workflow=CI)
 
 Decode log lines into maps:
 
