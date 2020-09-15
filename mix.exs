@@ -51,7 +51,7 @@ defmodule Logfmt.Mixfile do
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/jclem/logfmt-elixir"},
       maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
-      files: ~w(mix.exs lib README.md LICENSE.md)
+      files: ~w(mix.exs lib README.md LICENSE)
     ]
   end
 end
