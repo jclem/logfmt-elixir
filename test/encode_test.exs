@@ -19,6 +19,10 @@ defmodule LogfmtEncodeTest do
     assert encode(foo: "bar baz") == ~s(foo="bar baz")
   end
 
+  test "encode an empty string" do
+    assert encode(empty: "") == ~s(empty="")
+  end
+
   test "quotes a value with =" do
     assert encode(foo: "bar=baz") == ~s(foo="bar=baz")
   end

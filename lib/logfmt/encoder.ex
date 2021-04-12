@@ -30,6 +30,11 @@ defmodule Logfmt.Encoder do
   end
 
   @spec encode_value(value :: term) :: String.t()
+  defp encode_value(value)
+
+  defp encode_value(""),
+    do: ~s("")
+
   defp encode_value(value) do
     str = Logfmt.ValueEncoder.encode(value)
 
