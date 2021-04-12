@@ -7,13 +7,13 @@ on:
 jobs:
   test:
     name: Run tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@1.0.0
       - uses: erlef/setup-elixir@v1.7.0
         with:
-          otp-version: 22.x
-          elixir-version: 1.9.x
+          otp-version: 21.x
+          elixir-version: 1.8.x
       - run: mix deps.get
       - run: mix test --trace
       - run: mix format --check-formatted
