@@ -1,16 +1,12 @@
-defmodule Logfmt.Mixfile do
+defmodule Logfmt.MixProject do
   use Mix.Project
-
-  @version "3.3.1"
 
   def project do
     [
       app: :logfmt,
-      version: @version,
-      elixir: "~> 1.3",
-      build_embedded: Mix.env() == :prod,
+      version: "3.3.1",
+      elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
-      source_url: "https://github.com/jclem/logfmt-elixir",
       deps: deps(),
 
       # Hex
@@ -19,24 +15,18 @@ defmodule Logfmt.Mixfile do
     ]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type `mix help compile.app` for more information
+  # Run "mix help compile.app" to learn about applications.
   def application do
-    [applications: [:logger]]
+    [
+      extra_applications: [:logger]
+    ]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:earmark, "~> 1.4.2", only: :dev}, {:ex_doc, "~> 0.21.2", only: :dev}]
+    [
+      {:ex_doc, "~> 0.22.0", only: :dev, runtime: false}
+    ]
   end
 
   defp description do
