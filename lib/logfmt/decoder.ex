@@ -9,6 +9,7 @@ defmodule Logfmt.Decoder do
 
       iex> Logfmt.decode "foo=true"
       %{"foo" => true}
+
   """
   import String, only: [next_grapheme: 1]
 
