@@ -1,6 +1,6 @@
 defmodule Logfmt do
   @moduledoc """
-  Decodes and encodes logfmt-style log lines
+  Decodes and encodes logfmt-style log lines.
 
   In [logfmt][logfmt]-style log lines, data is encoded as a string of
   `"key-value"` pairs. Logfmt can encode a `Dict` into a string in this format,
@@ -13,7 +13,7 @@ defmodule Logfmt do
   """
 
   @doc ~S"""
-  Decodes the given line into a map
+  Decodes the given line into a map.
 
   ## Examples
 
@@ -28,6 +28,7 @@ defmodule Logfmt do
 
       iex> Logfmt.decode "foo=1"
       %{"foo" => 1}
+
   """
   @spec decode(String.t()) :: map
   def decode(string) do
@@ -35,13 +36,14 @@ defmodule Logfmt do
   end
 
   @doc ~S"""
-  Encodes the given Dict into a Logfmt-style line
+  Encodes the given Dict into a Logfmt-style line.
 
-  Optionally a list of options can be given to change the encode behaviour
+  Optionally a list of options can be given to change the encode behaviour.
 
-  Options:
-  * `output` - if set to :iolist, an iolist is returned,
-               any other value will return a binary
+  ## Options
+
+    * `output` - if set to `:iolist`, an iolist is returned, any other value
+      will return a binary
 
   ## Examples
 
@@ -56,6 +58,7 @@ defmodule Logfmt do
 
       iex> Logfmt.encode [foo: "bar baz"], [output: :iolist]
       [["foo", "=", ["\"", "bar baz", "\""]]]
+
   """
   @spec encode(Dict.t(), options :: Keyword.t()) :: String.t()
   def encode(list, options \\ []) do

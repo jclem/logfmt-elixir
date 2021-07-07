@@ -1,8 +1,8 @@
 defmodule Logfmt.MixProject do
   use Mix.Project
 
-  @version "3.3.2"
   @source_url "https://github.com/jclem/logfmt-elixir"
+  @version "3.3.2"
 
   def project do
     [
@@ -13,9 +13,7 @@ defmodule Logfmt.MixProject do
       deps: deps(),
 
       # Hex
-      description: description(),
       package: package(),
-      source_url: @source_url,
       docs: docs()
     ]
   end
@@ -34,14 +32,9 @@ defmodule Logfmt.MixProject do
     ]
   end
 
-  defp description do
-    """
-    Logfmt is a module for encoding and decoding logfmt-style log lines.
-    """
-  end
-
   defp package do
     [
+      description: "Logfmt is a module for encoding and decoding logfmt-style log lines.",
       contributors: ["Jonathan Clem <jotclem@gmail.com>"],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url},
@@ -52,9 +45,11 @@ defmodule Logfmt.MixProject do
 
   defp docs do
     [
-      source_ref: "v#{@version}",
+      extras: ["LICENSE.md": [title: "License"], "README.md": [title: "Readme"]],
       main: "readme",
-      extras: ["README.md": [title: "Readme"], "LICENSE.md": [title: "License"]]
+      source_url: @source_url,
+      source_ref: "v#{@version}",
+      formatters: ["html"]
     ]
   end
 end
