@@ -42,10 +42,8 @@ defmodule Logfmt.MixProject do
 
   defp package do
     [
-      contributors: ["Jonathan Clem <jotclem@gmail.com>"],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url},
-      maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
       files: ~w(mix.exs lib README.md LICENSE.md)
     ]
   end
