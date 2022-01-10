@@ -1,4 +1,28 @@
-# Logfmt [![Build Status](https://github.com/jclem/logfmt-elixir/workflows/CI/badge.svg)](https://github.com/jclem/logfmt-elixir/actions?workflow=CI)
+# Logfmt
+
+[![Build Status](https://github.com/jclem/logfmt-elixir/workflows/CI/badge.svg)](https://github.com/jclem/logfmt-elixir/actions?workflow=CI)
+[![Module Version](https://img.shields.io/hexpm/v/logfmt.svg)](https://hex.pm/packages/logfmt)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/logfmt/)
+[![Total Download](https://img.shields.io/hexpm/dt/logfmt.svg)](https://hex.pm/packages/logfmt)
+[![License](https://img.shields.io/hexpm/l/logfmt.svg)](https://github.com/jclem/logfmt-elixir/blob/master/LICENSE.md)
+[![Last Updated](https://img.shields.io/github/last-commit/jclem/logfmt-elixir.svg)](https://github.com/jclem/logfmt-elixir/commits/master)
+
+Logfmt is a module for encoding and decoding logfmt-style log lines.
+
+## Installation
+
+The package can be installed by adding `:logfmt` to your list of dependencies in
+`mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:logfmt, "~> 3.3"}
+  ]
+end
+```
+
+## Usages
 
 Decode log lines into maps:
 
@@ -17,7 +41,7 @@ iex> Logfmt.encode %{foo: "bar"}
 "foo=bar"
 ```
 
-Custom types can encoded by implementing the ValueEncoder procotol for it.
+Custom types can encoded by implementing the ValueEncoder protocol for it.
 
 For example to encode DateTime and NaiveDateTime and implementation could look like this:
 

@@ -9,6 +9,7 @@ defmodule Logfmt.Encoder do
 
       iex> Logfmt.encode [foo: "bar baz", qux: true]
       "foo=\"bar baz\" qux=true"
+
   """
 
   @doc """

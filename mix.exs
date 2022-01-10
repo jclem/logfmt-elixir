@@ -1,8 +1,8 @@
 defmodule Logfmt.MixProject do
   use Mix.Project
 
-  @version "3.3.2"
   @source_url "https://github.com/jclem/logfmt-elixir"
+  @version "3.3.2"
 
   def project do
     [
@@ -42,19 +42,17 @@ defmodule Logfmt.MixProject do
 
   defp package do
     [
-      contributors: ["Jonathan Clem <jotclem@gmail.com>"],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url},
-      maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
       files: ~w(mix.exs lib README.md LICENSE.md)
     ]
   end
 
   defp docs do
     [
-      source_ref: "v#{@version}",
+      extras: ["LICENSE.md": [title: "License"], "README.md": [title: "Readme"]],
       main: "readme",
-      extras: ["README.md": [title: "Readme"], "LICENSE.md": [title: "License"]]
+      source_ref: "v#{@version}"
     ]
   end
 end
