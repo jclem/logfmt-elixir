@@ -2,7 +2,7 @@ defmodule Logfmt.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/jclem/logfmt-elixir"
-  @version "3.3.2"
+  @version "3.3.3"
 
   def project do
     [
