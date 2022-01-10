@@ -13,6 +13,7 @@ defmodule Logfmt.MixProject do
       deps: deps(),
 
       # Hex
+      description: description(),
       package: package(),
       docs: docs()
     ]
@@ -32,9 +33,14 @@ defmodule Logfmt.MixProject do
     ]
   end
 
+  defp description do
+    """
+    Logfmt is a module for encoding and decoding logfmt-style log lines.
+    """
+  end
+
   defp package do
     [
-      description: "Logfmt is a module for encoding and decoding logfmt-style log lines.",
       contributors: ["Jonathan Clem <jotclem@gmail.com>"],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url},
