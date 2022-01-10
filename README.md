@@ -97,10 +97,3 @@ Now, this module decodes into maps only (with string keys) and encodes any Dict
 implementation type. This is a fair compromise, because ordering upon decoding a
 Logfmt line is not important, and keeping only the last value for a duplicate
 key in a log line is fair, as well.
-
-## Copyright and License
-
-Copyright (c) 2015 Jonathan Clem
-
-This library is released under the MIT License. See the [LICENSE.md](./LICENSE.md) file
-for further details.
