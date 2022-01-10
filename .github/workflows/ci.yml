@@ -25,6 +25,11 @@ jobs:
             elixir: 1.13.x
     steps:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
+      - uses: actions/upload-artifact@82c141cc518b40d92cc801eee768e7aafc9c2fa2 # v2.3.1
+        with:
+          name: crash-logs
+          path: erl_crash.dump
+          if-no-files-found: ignore
       - uses: erlef/setup-elixir@988e02bfe678367a02564f65ca2e37726dc0268f # v1.9.0
         with:
           otp-version: 21.x
@@ -37,11 +42,6 @@ jobs:
           key: ${{ runner.os }}-mix-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
             ${{ runner.os }}-mix-${{ matrix.elixir }}
-      - uses: actions/upload-artifact@82c141cc518b40d92cc801eee768e7aafc9c2fa2 # v2.3.1
-        with:
-          name: crash-logs
-          path: erl_crash.dump
-          if-no-files-found: ignore
       - run: mix deps.get
       - run: mix test --trace
       - run: mix format --check-formatted
