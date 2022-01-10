@@ -54,8 +54,7 @@ defmodule Logfmt.MixProject do
     [
       extras: ["LICENSE.md": [title: "License"], "README.md": [title: "Readme"]],
       main: "readme",
-      source_ref: "v#{@version}",
-      formatters: ["html"]
+      source_ref: "v#{@version}"
     ]
   end
 end
