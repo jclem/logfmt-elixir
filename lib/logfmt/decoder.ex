@@ -27,7 +27,6 @@ defmodule Logfmt.Decoder do
     parse_char(next_grapheme(rest), :key, char, map)
   end
 
-  @spec parse_char({String.t(), String.t()}, :garbage, map) :: map
   defp parse_char({_char, rest}, :garbage, map) do
     parse_char(next_grapheme(rest), :garbage, map)
   end
@@ -43,12 +42,10 @@ defmodule Logfmt.Decoder do
     parse_char(next_grapheme(rest), :key, key <> char, map)
   end
 
-  @spec parse_char({String.t(), String.t()}, :key, String.t(), map) :: map
   defp parse_char({"=", rest}, :key, key, map) do
     parse_char(next_grapheme(rest), :equals, key, map)
   end
 
-  @spec parse_char({String.t(), String.t()}, :key, String.t(), map) :: map
   defp parse_char({_char, rest}, :key, key, map) do
     parse_char(next_grapheme(rest), :garbage, map |> put_value(key, true))
   end
@@ -64,12 +61,10 @@ defmodule Logfmt.Decoder do
     parse_char(next_grapheme(rest), :ivalue, key, char, map)
   end
 
-  @spec parse_char({String.t(), String.t()}, :equals, String.t(), map) :: map
   defp parse_char({"\"", rest}, :equals, key, map) do
     parse_char(next_grapheme(rest), :qvalue, false, key, "", map)
   end
 
-  @spec parse_char({String.t(), String.t()}, :equals, String.t(), map) :: map
   defp parse_char({_char, rest}, :equals, key, map) do
     parse_char(next_grapheme(rest), :garbage, map |> put_value(key, true))
   end
@@ -85,7 +80,6 @@ defmodule Logfmt.Decoder do
     parse_char(next_grapheme(rest), :garbage, map |> put_value(key, value))
   end
 
-  @spec parse_char({String.t(), String.t()}, :ivalue, String.t(), String.t(), map) :: map
   defp parse_char({char, rest}, :ivalue, key, value, map) do
     parse_char(next_grapheme(rest), :ivalue, key, value <> char, map)
   end
@@ -105,12 +99,10 @@ defmodule Logfmt.Decoder do
     parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
   end
 
-  @spec parse_char({String.t(), String.t()}, :qvalue, false, String.t(), String.t(), map) :: map
   defp parse_char({"\"", rest}, :qvalue, false, key, value, map) do
     parse_char(next_grapheme(rest), :garbage, map |> put_value(key, value))
   end
 
-  @spec parse_char({String.t(), String.t()}, :qvalue, false, String.t(), String.t(), map) :: map
   defp parse_char({char, rest}, :qvalue, false, key, value, map) do
     parse_char(next_grapheme(rest), :qvalue, false, key, value <> char, map)
   end
@@ -130,16 +122,11 @@ defmodule Logfmt.Decoder do
     map |> Map.put(key, value |> coerce_value)
   end
 
-  @spec coerce_value(String.t()) :: true
+  @spec coerce_value(String.t()) :: boolean | number | String.t() | nil
   defp coerce_value("true"), do: true
-
-  @spec coerce_value(String.t()) :: false
   defp coerce_value("false"), do: false
-
-  @spec coerce_value(String.t()) :: nil
   defp coerce_value("nil"), do: nil
 
-  @spec coerce_value(String.t()) :: number | String.t()
   defp coerce_value(value) do
     integer =
       case Integer.parse(value) do
