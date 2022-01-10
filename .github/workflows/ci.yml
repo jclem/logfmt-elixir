@@ -32,16 +32,16 @@ jobs:
           if-no-files-found: ignore
       - uses: erlef/setup-elixir@988e02bfe678367a02564f65ca2e37726dc0268f # v1.9.0
         with:
-          otp-version: 21.x
+          otp-version: ${{ matrix.otp }}
           elixir-version: ${{ matrix.elixir }}
       - uses: actions/cache@67b6d52d50609f6166e3ea1d8872aca3a4763bd2 # v2.1.7
         with:
           path: |
             deps
             _build
-          key: ${{ runner.os }}-mix-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
+          key: ${{ runner.os }}-mix-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
-            ${{ runner.os }}-mix-${{ matrix.elixir }}
+            ${{ runner.os }}-mix-${{ matrix.otp }}-${{ matrix.elixir }}-
       - run: mix deps.get
       - run: mix test --trace
       - run: mix format --check-formatted
