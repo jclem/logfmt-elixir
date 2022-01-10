@@ -15,6 +15,7 @@ defmodule Logfmt.MixProject do
       # Hex
       description: description(),
       package: package(),
+      source_url: @source_url,
       docs: docs()
     ]
   end
@@ -42,7 +43,6 @@ defmodule Logfmt.MixProject do
   defp package do
     [
       contributors: ["Jonathan Clem <jotclem@gmail.com>"],
-      licenses: ["MIT"],
       links: %{"GitHub" => @source_url},
       maintainers: ["Jonathan Clem <jonathan@jclem.net>"],
       files: ~w(mix.exs lib README.md LICENSE.md)
@@ -53,7 +53,6 @@ defmodule Logfmt.MixProject do
     [
       extras: ["LICENSE.md": [title: "License"], "README.md": [title: "Readme"]],
       main: "readme",
-      source_url: @source_url,
       source_ref: "v#{@version}",
       formatters: ["html"]
     ]
