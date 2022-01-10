@@ -17,7 +17,7 @@ The package can be installed by adding `:logfmt` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:logfmt, "~> 3.2.0"}
+    {:logfmt, "~> 3.3"}
   ]
 end
 ```
