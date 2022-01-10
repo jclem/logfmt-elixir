@@ -10,7 +10,19 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        elixir: ['1.8.x', '1.9.x', '1.10.x', '1.11.x', '1.12.x', '1.13.x']
+        include:
+          - otp: 21.x
+            elixir: 1.8.x
+          - otp: 21.x
+            elixir: 1.9.x
+          - otp: 21.x
+            elixir: 1.10.x
+          - otp: 21.x
+            elixir: 1.11.x
+          - otp: 22.x
+            elixir: 1.12.x
+          - otp: 22.x
+            elixir: 1.13.x
     steps:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
       - uses: erlef/setup-elixir@988e02bfe678367a02564f65ca2e37726dc0268f # v1.9.0
